@@ -9,26 +9,27 @@ import org.wintrisstech.irobot.ioio.IRobotCreateInterface;
 
 public class MyRobot extends Ferrari
 {
-    private int[][] stateTable =
+    int cState = STRAIGHT;
+    int vectorState = 0;
+    static final int STRAIGHT = 0;
+    static final int LEFT = 1;
+    static final int RIGHT = 2;
+    static final int CENTER = 3;
+    static int r2d2[][] =
     {
         {
-            0, 2, 1, 3
+            STRAIGHT, LEFT, RIGHT, CENTER
         },
         {
-            1, 2, 1, 3
+            STRAIGHT, LEFT, RIGHT, CENTER
         },
         {
-            2, 2, 1, 3
+            STRAIGHT, LEFT, RIGHT, CENTER
         },
         {
-            3, 2, 1, 3
+            STRAIGHT, LEFT, RIGHT, CENTER
         }
-            
     };
-    private int presentState = 0;
-    private int statePointer = 0;
-   
-    
 
     MyRobot(IOIO ioio, IRobotCreateInterface iRobotCreate, Dashboard dashboard) throws ConnectionLostException
     {
@@ -40,80 +41,17 @@ public class MyRobot extends Ferrari
      */
     public void goRobot()
     {
-        try
+        switch (r2d2[vectorState][cState])
         {
-            driveDirect(100, 100);
-            stateControler();
-        } catch (Exception ex)
-        {
-            Logger.getLogger(MyRobot.class.getName()).log(Level.SEVERE, null, ex);
+            case STRAIGHT: //_(iodejvomrdbifgv,clf
+                break;
+            case LEFT: //_(iodejvomrdbifgv,clf
+                break;
+            case RIGHT: //_(iodejvomrdbifgv,clf
+                break;
+            case CENTER: //_(iodejvomrdbifgv,clf
+                break;
+
         }
     }
-    public void stateControler() throws Exception
-    {
-        while (true)
-        {
-            switch(stateTable[presentState][statePointer])
-        {
-            case 0: //case A, not bumped
-                presentState = 0;
-                break;
-            case 1: //case B, right bumped
-                presentState = 1;
-                bumpReaction("right");
-                break;
-            case 2: //case C, left bumped
-                presentState = 0;
-                bumpReaction("left");
-                break;
-            case 3: //case D, bump bolth
-                presentState = 0;
-                bumpReaction("both");
-                break;
-                
-        }
-        }
-    }
-   public void bumpReaction(String bumpDirection) throws Exception
-   {
-       if (bumpDirection.equals("right"))
-       {
-           driveDirect(-100, -200);
-       }
-       if (bumpDirection.equals("left"))
-       {
-           driveDirect(-200, -100);
-       }
-       if (bumpDirection.equals("both"))
-       {
-           driveDirect(-100, -100);
-       }
-       SystemClock.sleep(2000);
-       driveDirect(100, 100);
-       statePointer = 0;
-       presentState = 0;
-   }
-   public void checkSensors() throws Exception
-   {
-       readSensors(SENSORS_GROUP_ID6);
-       if ( isBumpRight() && isBumpLeft())
-       {
-           statePointer = 3;    
-       }
-       if (!isBumpRight() && !isBumpLeft())
-       {
-           statePointer = 0;    
-       }
-       if ( isBumpRight() && !isBumpLeft())
-       {
-           statePointer = 1;    
-       }
-       if ( !isBumpRight() && isBumpLeft())
-       {
-           statePointer = 2;    
-       }
-   }
-           
-    
-    
 }
